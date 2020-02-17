@@ -12,18 +12,35 @@ class ATTUNEMENT_API ABaseCharacter : public ACharacter
 	GENERATED_BODY()
 
 public:
+		//Non Blueprint Public functions
 	// Sets default values for this character's properties
 	ABaseCharacter();
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+public:
+		//Blueprint Public Functions
+
+public:
+		// Non Blueprint Public Varibles
+public:
+		// Blueprint Public Varibles
+protected:
+		// Non Blueprint Protected Functions
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+protected:
+		//Blueprint Protected functions
+protected:
+		// Non Blueprint Protected Varibles
+protected:
+		// Blueprint Protected Varibles
+protected:
+
 
 };
