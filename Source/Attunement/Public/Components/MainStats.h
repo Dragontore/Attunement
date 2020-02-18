@@ -206,24 +206,24 @@ protected:
 		// Blueprint Protected Varibles
 
 		// Health Varibles
-	UPROPERTY(Replicated)
+	UPROPERTY(Replicated, VisibleAnywhere)
 	float CurrentHealth;
 
-	UPROPERTY(Replicated)
+	UPROPERTY(Replicated, VisibleAnywhere)
 	float MaxHealth;
 
 	//Stamina Varibles
-	UPROPERTY(Replicated)
+	UPROPERTY(Replicated, VisibleAnywhere)
 	float CurrentStamina;
 
-	UPROPERTY(Replicated)
+	UPROPERTY(Replicated, VisibleAnywhere)
 	float MaxStamina;
 
 	//Mana Varibles
-	UPROPERTY(Replicated)
+	UPROPERTY(Replicated, VisibleAnywhere)
 	float CurrentGreyMana;
 
-	UPROPERTY(Replicated)
+	UPROPERTY(Replicated, VisibleAnywhere)
 	float MaxGreyMana;
 
 	//Regenratiion rate for Health stats
@@ -238,13 +238,13 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BaseStats")
 	float GreyManaRegenRate;
 
-	UPROPERTY(Replicated)
+	UPROPERTY(Replicated, VisibleAnywhere)
 	int BronzeCoin;
 
-	UPROPERTY(Replicated)
+	UPROPERTY(Replicated, VisibleAnywhere)
 	int SilverCoin;
 
-	UPROPERTY(Replicated)
+	UPROPERTY(Replicated, VisibleAnywhere)
 	int GoldCoin;
 		
 };
