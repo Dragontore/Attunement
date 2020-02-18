@@ -88,99 +88,275 @@ void UMainStats::BeginPlay()
 
 void UMainStats::ControlSprintingTimer(bool IsSprinting)
 {
+	if (GetOwnerRole() < ROLE_Authority)
+	{
+		ServerControlSprintingTimer(IsSprinting);
+		return;
+	}
+	else if (GetOwnerRole() == ROLE_Authority)
+	{
+		if (IsSprinting)
+		{
+			GetWorld()->GetTimerManager().PauseTimer(StaminaTimerHandle);
+		}
+		else
+		{
+			GetWorld()->GetTimerManager().UnPauseTimer(StaminaTimerHandle);
+		}
+	}
 }
 
 void UMainStats::SetCurrentHealth(float Value)
 {
+	if (GetOwnerRole() < ROLE_Authority)
+	{
+		ServerSetCurrentHealth(Value);
+	}
+	else if (GetOwnerRole() == ROLE_Authority)
+	{
+
+		if (CurrentHealth >= MaxHealth)
+		{
+			CurrentHealth = MaxHealth;
+		}
+		else
+		{
+			CurrentHealth += Value;
+		}
+	}
 }
 
 void UMainStats::SetMaxHealth(float Value)
 {
+	if (GetOwnerRole() < ROLE_Authority)
+	{
+		ServerSetMaxHealth(Value);
+	}
+	else if (GetOwnerRole() == ROLE_Authority)
+	{
+		MaxHealth += Value;
+	}
 }
 
 void UMainStats::SetHealthRegenRate(float Value)
 {
+	if (GetOwnerRole() < ROLE_Authority)
+	{
+		ServerSetHealthRegen(Value);
+	}
+	else if (GetOwnerRole() == ROLE_Authority)
+	{
+		HealthRegenRate += Value;
+	}
 }
 
 void UMainStats::SetCurrentStamina(float Value)
 {
+	if (GetOwnerRole() < ROLE_Authority)
+	{
+		ServerSetCurrentStamina(Value);
+	}
+	else if (GetOwnerRole() < ROLE_Authority)
+	{
+		if (CurrentStamina >= MaxStamina)
+		{
+			CurrentStamina = MaxStamina;
+		}
+		else
+		{
+			CurrentStamina += Value;
+		}
+	}
 }
 
 void UMainStats::SetMaxStamina(float Value)
 {
+	if (GetOwnerRole() < ROLE_Authority)
+	{
+		ServerSetMaxStamina(Value);
+	}
+	else if (GetOwnerRole() == ROLE_Authority)
+	{
+		MaxStamina += Value;
+	}
 }
 
 void UMainStats::SetStaminaRegenRate(float Value)
 {
+	if (GetOwnerRole() < ROLE_Authority)
+	{
+		ServerSetStaminaRegen(Value);
+	}
+	else if (GetOwnerRole() == ROLE_Authority)
+	{
+		StaminaRegenRate += Value;
+	}
 }
 
 void UMainStats::SetCurrentGreyMana(float Value)
 {
+	if (GetOwnerRole() < ROLE_Authority)
+	{
+		ServerSetCurrentGreyMana(Value);
+	}
+	else if (GetOwnerRole() == ROLE_Authority)
+	{
+		if (CurrentGreyMana >= MaxGreyMana)
+		{
+			CurrentGreyMana = MaxGreyMana;
+		}
+		else
+		{
+			CurrentGreyMana += Value;
+		}
+	}
 }
 
 void UMainStats::SetMaxGreyMana(float Value)
 {
+	if (GetOwnerRole() < ROLE_Authority)
+	{
+		ServerSetMaxGreyMana(Value);
+	}
+	else if (GetOwnerRole() == ROLE_Authority)
+	{
+		MaxGreyMana += Value;
+	}
 }
 
 void UMainStats::SetGreyManaRegenRate(float Value)
 {
+	if (GetOwnerRole() < ROLE_Authority)
+	{
+		ServerSetGreyManaRegen(Value);
+	}
+	else if (GetOwnerRole() == ROLE_Authority)
+	{
+		GreyManaRegenRate += Value;
+	}
 }
 
 void UMainStats::SetBronzeCoins(float Value)
 {
+	if (GetOwnerRole() < ROLE_Authority)
+	{
+		ServerSetBronzeCoins(Value);
+	}
+	else if (GetOwnerRole() == ROLE_Authority)
+	{
+		if (GetBronzeCoins() - Value < 0 && GetSilverCoins() > 1)
+		{
+			SetSilverCoins(-1);
+			SetBronzeCoins(+100);
+			BronzeCoin += Value;
+			return;
+		}
+		else if (GetBronzeCoins() + Value > 100)
+		{
+			BronzeCoin += Value;
+			BronzeCoin -= 100;
+			SetSilverCoins(+1);
+			return;
+		}
+		else if (GetBronzeCoins() - Value < 0)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Not Enought Money"))
+			return;
+		}
+
+	}
 }
 
 void UMainStats::SetSilverCoins(float Value)
 {
+	if (GetOwnerRole() < ROLE_Authority)
+	{
+		ServerSetSilverCoins(Value);
+	}
+	else if (GetOwnerRole() == ROLE_Authority)
+	{
+		if (GetSilverCoins() - Value < 0 && GetGoldCoins() > 1)
+		{
+			SetGoldCoins(-1);
+			SilverCoin += 100;
+			SilverCoin += Value;
+			return;
+		}
+		else if (GetSilverCoins() + Value > 100)
+		{
+			SilverCoin += Value;
+			SilverCoin -= 100;
+			SetGoldCoins(+1);
+			return;
+		}
+		else if (GetSilverCoins() < 1 - Value && GetBronzeCoins() > 100 + Value)
+		{
+			SetBronzeCoins(+100);
+		}
+	}
 }
 
 void UMainStats::SetGoldCoins(float Value)
 {
+	if (GetOwnerRole() < ROLE_Authority)
+	{
+		ServerSetGoldCoins(Value);
+	}
+	else if (GetOwnerRole() == ROLE_Authority)
+	{
+	if (GetGoldCoins() - Value < 0)
+		{
+			SetSilverCoins(+100);
+			GoldCoin += Value;
+		}
+		
+	}
+
 }
 
 float UMainStats::GetCurrentStamina()
 {
-	return 0.0f;
+	return CurrentStamina;
 }
 
 float UMainStats::GetMaxStamina()
 {
-	return 0.0f;
+	return MaxStamina;
 }
 
 float UMainStats::GetStaminaRegenRate()
 {
-	return 0.0f;
+	return StaminaRegenRate;
 }
 
 float UMainStats::GetCurrentGreyMana()
 {
-	return 0.0f;
+	return CurrentGreyMana;
 }
 
 float UMainStats::GetMaxGreyMana()
 {
-	return 0.0f;
+	return MaxGreyMana;
 }
 
 float UMainStats::GetGreyManaRegenRate()
 {
-	return 0.0f;
+	return GreyManaRegenRate;
 }
 
 float UMainStats::GetBronzeCoins()
 {
-	return 0.0f;
+	return BronzeCoin;
 }
 
 float UMainStats::GetSilverCoins()
 {
-	return 0.0f;
+	return SilverCoin;
 }
 
 float UMainStats::GetGoldCoins()
 {
-	return 0.0f;
+	return GoldCoin;
 }
 
 void UMainStats::SetTimers()
@@ -200,139 +376,196 @@ void UMainStats::HandleIncreaseHealthStats()
 
 void UMainStats::HandleDecreaseHealthStats()
 {
+	SetCurrentHealth(HealthDecreaseRate);
 }
 
 void UMainStats::HandleIncreaseStaminaStats()
 {
+	SetCurrentStamina(StaminaIncreaseRate);
 }
 
 void UMainStats::HandleDecreaseStaminaStats()
 {
+	SetCurrentStamina(StaminaDecreaseRate);
 }
 
 void UMainStats::HandleIncreaseGreyManaStats()
 {
+	SetCurrentGreyMana(GreyManaIncreaseRate);
 }
 
 void UMainStats::HandleDecreaseGreyManaStats()
 {
+	SetCurrentGreyMana(GreyManaDecreaseRate);
 }
 
 bool UMainStats::ServerSetCurrentHealth_Validate(float Value)
 {
-	return false;
+	return true;
 }
 
 void UMainStats::ServerSetCurrentHealth_Implementation(float Value)
 {
+	if (GetOwnerRole() == ROLE_Authority)
+	{
+		SetCurrentHealth(Value);
+	}
 }
 
 bool UMainStats::ServerSetMaxHealth_Validate(float Value)
 {
-	return false;
+	return true;
 }
 
 void UMainStats::ServerSetMaxHealth_Implementation(float Value)
 {
+	if (GetOwnerRole() == ROLE_Authority)
+	{
+		SetMaxHealth(Value);
+	}
 }
 
 bool UMainStats::ServerSetHealthRegen_Validate(float Value)
 {
-	return false;
+	return true;
 }
 
 void UMainStats::ServerSetHealthRegen_Implementation(float Value)
 {
+	if (GetOwnerRole() == ROLE_Authority)
+	{
+		SetHealthRegenRate(Value);
+	}
 }
 
 bool UMainStats::ServerSetCurrentStamina_Validate(float Value)
 {
-	return false;
+	return true;
 }
 
 void UMainStats::ServerSetCurrentStamina_Implementation(float Value)
 {
+	if (GetOwnerRole() == ROLE_Authority)
+	{
+		SetCurrentStamina(Value);
+	}
 }
 
 bool UMainStats::ServerSetMaxStamina_Validate(float Value)
 {
-	return false;
+	return true;
 }
 
 void UMainStats::ServerSetMaxStamina_Implementation(float Value)
 {
+	if (GetOwnerRole() == ROLE_Authority)
+	{
+		SetMaxStamina(Value);
+	}
 }
 
 bool UMainStats::ServerSetStaminaRegen_Validate(float Value)
 {
-	return false;
+	return true;
 }
 
 void UMainStats::ServerSetStaminaRegen_Implementation(float Value)
 {
+	if (GetOwnerRole() == ROLE_Authority)
+	{
+		SetStaminaRegenRate(Value);
+	}
 }
 
 bool UMainStats::ServerSetCurrentGreyMana_Validate(float Value)
 {
-	return false;
+	return true;
 }
 
 void UMainStats::ServerSetCurrentGreyMana_Implementation(float Value)
 {
+	if (GetOwnerRole() == ROLE_Authority)
+	{
+		SetCurrentGreyMana(Value);
+	}
 }
 
 bool UMainStats::ServerSetMaxGreyMana_Validate(float Value)
 {
-	return false;
+	return true;
 }
 
 void UMainStats::ServerSetMaxGreyMana_Implementation(float Value)
 {
+	if (GetOwnerRole() == ROLE_Authority)
+	{
+		SetMaxGreyMana(Value);
+	}
 }
 
 bool UMainStats::ServerSetGreyManaRegen_Validate(float Value)
 {
-	return false;
+	return true;
 }
 
 void UMainStats::ServerSetGreyManaRegen_Implementation(float Value)
 {
+	if (GetOwnerRole() == ROLE_Authority)
+	{
+		SetGreyManaRegenRate(Value);
+	}
 }
 
 bool UMainStats::ServerControlSprintingTimer_Validate(bool IsSprinting)
 {
-	return false;
+	return true;
 }
 
 void UMainStats::ServerControlSprintingTimer_Implementation(bool IsSprinting)
 {
+	if (GetOwnerRole() == ROLE_Authority)
+	{
+		ControlSprintingTimer(IsSprinting);
+	}
 }
 
 bool UMainStats::ServerSetBronzeCoins_Validate(float Value)
 {
-	return false;
+	return true;
 }
 
 void UMainStats::ServerSetBronzeCoins_Implementation(float Value)
 {
+	if (GetOwnerRole() == ROLE_Authority)
+	{
+		SetBronzeCoins(Value);
+	}
 }
 
 bool UMainStats::ServerSetSilverCoins_Validate(float Value)
 {
-	return false;
+	return true;
 }
 
 void UMainStats::ServerSetSilverCoins_Implementation(float Value)
 {
+	if (GetOwnerRole() == ROLE_Authority)
+	{
+		SetSilverCoins(Value);
+	}
 }
 
 bool UMainStats::ServerSetGoldCoins_Validate(float Value)
 {
-	return false;
+	return true;
 }
 
 void UMainStats::ServerSetGoldCoins_Implementation(float Value)
 {
+	if (GetOwnerRole() == ROLE_Authority)
+	{
+		SetGoldCoins(Value);
+	}
 }
 
 
