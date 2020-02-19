@@ -4,9 +4,12 @@
 #include "MainPlayerCharacter.h"
 
 #include "Components/BaseStats.h"
+#include "Components/MainCharacterMovementComponent.h"
 
 
-AMainPlayerCharacter::AMainPlayerCharacter()
+
+AMainPlayerCharacter::AMainPlayerCharacter(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer.SetDefaultSubobjectClass<UMainCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
 	BaseStatsComp = CreateDefaultSubobject<UBaseStats>(TEXT("Base Stats Component"));
 }
@@ -15,6 +18,7 @@ AMainPlayerCharacter::AMainPlayerCharacter()
 void AMainPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
 
 }
 
@@ -25,3 +29,4 @@ void AMainPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 	// Set up gameplay key bindings
 	check(PlayerInputComponent);
 }
+

@@ -10,6 +10,7 @@ class USpringArmComponent;
 class UCameraComponent;
 
 class UMainStats;
+class UMainCharacterMovementComponent;
 
 UCLASS()
 class ATTUNEMENT_API ABaseCharacter : public ACharacter
@@ -19,13 +20,15 @@ class ATTUNEMENT_API ABaseCharacter : public ACharacter
 public:
 		//Non Blueprint Public functions
 	// Sets default values for this character's properties
-	ABaseCharacter();
+	ABaseCharacter(const FObjectInitializer& ObjectInitializer);
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	virtual void PostInitializeComponents() override;
 
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
@@ -34,6 +37,9 @@ public:
 
 public:
 		//Blueprint Public Functions
+
+	UFUNCTION(BlueprintCallable, Category = "Movement")
+	FORCEINLINE UMainCharacterMovementComponent* GetMainMovementComponent() const { return MainMovementComponent; }
 
 public:
 		// Non Blueprint Public Varibles
@@ -89,6 +95,9 @@ protected:
 
 	UPROPERTY(Replicated)
 	bool bIsSprinting;
+
+	UMainCharacterMovementComponent* MainMovementComponent;
+
 protected:
 		// Blueprint Protected Varibles
 protected:

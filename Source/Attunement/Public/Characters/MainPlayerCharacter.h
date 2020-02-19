@@ -18,13 +18,14 @@ class ATTUNEMENT_API AMainPlayerCharacter : public ABaseCharacter
 
 public:
 		// Non Blueprint Public Functions
-	AMainPlayerCharacter();
+	AMainPlayerCharacter(const FObjectInitializer& ObjectInitializer);
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
 		// Blueprint Public Functions
+
 public:
 		// Non Blueprint Public Varibles
 public:
@@ -44,6 +45,8 @@ protected:
 		//Blueprint Protected Functions
 protected:
 		// Non Blueprint Protected Varibles
+
 protected:
 		// Blueprint Protected Varibles
+
 };

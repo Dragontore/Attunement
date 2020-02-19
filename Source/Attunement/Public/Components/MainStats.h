@@ -16,6 +16,8 @@ class ATTUNEMENT_API UMainStats : public UActorComponent
 
 public:	
 
+	//TODO Set float for walk speed and sprint speed.
+
 		//Non Blueprint Public functions
 	// Sets default values for this component's properties
 	UMainStats();
