@@ -106,6 +106,21 @@ void UMainStats::ControlSprintingTimer(bool IsSprinting)
 	}
 }
 
+float UMainStats::GetCurrentHealth()
+{
+	return CurrentHealth;
+}
+
+float UMainStats::GetMaxHealth()
+{
+	return MaxHealth;
+}
+
+float UMainStats::GetHealthRegenRate()
+{
+	return HealthRegenRate;
+}
+
 void UMainStats::SetCurrentHealth(float Value)
 {
 	if (GetOwnerRole() < ROLE_Authority)

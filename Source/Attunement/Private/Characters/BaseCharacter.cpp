@@ -83,10 +83,7 @@ void ABaseCharacter::MoveForward(float Value)
 
 		// get forward vector
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-		if (!bIsSprinting)
-			Value *= 0.5f;
 		AddMovementInput(Direction, Value);
-
 	}
 }
 
@@ -101,10 +98,7 @@ void ABaseCharacter::MoveRight(float Value)
 		// get right vector 
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		// add movement in that direction
-		if (!bIsSprinting)
-			Value *= 0.5f;
 		AddMovementInput(Direction, Value);
-
 	}
 }
 

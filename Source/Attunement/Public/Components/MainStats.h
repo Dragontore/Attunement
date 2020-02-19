@@ -28,6 +28,14 @@ public:
 		//Blueprint Public Functions
 
 		// Non Server Health Function
+		// Health Getter Function
+	UFUNCTION(BlueprintCallable, Category = "Health Getter")
+	float GetCurrentHealth();
+	UFUNCTION(BlueprintCallable, Category = "Health Getter")
+	float GetMaxHealth();
+	UFUNCTION(BlueprintCallable, Category = "Health Getter")
+	float GetHealthRegenRate();
+
 	UFUNCTION(BlueprintCallable, Category = "Health Function")
 	void SetCurrentHealth(float Value);
 	UFUNCTION(BlueprintCallable, Category = "Health Function")
