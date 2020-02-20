@@ -93,6 +93,16 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Coin Getter")
 	float GetGoldCoins();
 
+	// Movement Speed Functions
+	UFUNCTION(Blueprintcallable, Category = "Movement")
+	float GetWalkSpeed();
+	UFUNCTION(BlueprintCallable, Category = "Movement")
+	float GetSprintSpeed();
+	UFUNCTION(BlueprintCallable, Category = "Movement")
+	void SetWalkSpeed(float Value);
+	UFUNCTION(BlueprintCallable, Category = "Movement")
+	void SetSprintSpeed(float Value);
+
 
 
 public:
@@ -178,6 +188,16 @@ protected:
 	bool ServerControlSprintingTimer_Validate(bool IsSprinting);
 	void ServerControlSprintingTimer_Implementation(bool IsSprinting);
 
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerSetWalkSpeed(float Value);
+	bool ServerSetWalkSpeed_Validate(float Value);
+	void ServerSetWalkSpeed_Implementation(float Value);
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerSetSprintSpeed(float Value);
+	bool ServerSetSprintSpeed_Validate(float Value);
+	void ServerSetSprintSpeed_Implementation(float Value);
+
 	//Server Coin Functions
 
 	UFUNCTION(Server, Reliable, WithValidation)
@@ -256,5 +276,12 @@ protected:
 
 	UPROPERTY(Replicated, VisibleAnywhere)
 	int GoldCoin;
+
+	//Movment Varibles
+	UPROPERTY(Replicated, VisibleAnywhere)
+	float WalkSpeed;
+
+	UPROPERTY(Replicated, VisibleAnywhere)
+	float SprintSpeed;
 		
 };

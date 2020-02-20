@@ -45,6 +45,9 @@ UMainStats::UMainStats()
 	SilverCoin = 0;
 	GoldCoin = 0;
 
+	//Movement Defaluts
+	WalkSpeed = 300.0f;
+	SprintSpeed = 600.0f;
 	
 }
 
@@ -64,6 +67,10 @@ void UMainStats::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifeti
 	//Mana Replicated Varibles
 	DOREPLIFETIME_CONDITION(UMainStats, CurrentGreyMana, COND_OwnerOnly);
 	DOREPLIFETIME_CONDITION(UMainStats, MaxGreyMana, COND_OwnerOnly);
+
+	//Movement Replicated Varibles
+	DOREPLIFETIME_CONDITION(UMainStats, WalkSpeed, COND_OwnerOnly);
+	DOREPLIFETIME_CONDITION(UMainStats, SprintSpeed, COND_OwnerOnly);
 
 
 	// Coin Varibles
@@ -374,6 +381,40 @@ float UMainStats::GetGoldCoins()
 	return GoldCoin;
 }
 
+float UMainStats::GetWalkSpeed()
+{
+	return WalkSpeed;
+}
+
+float UMainStats::GetSprintSpeed()
+{
+	return SprintSpeed;
+}
+
+void UMainStats::SetWalkSpeed(float Value)
+{
+	if (GetOwnerRole() < ROLE_Authority)
+	{
+		ServerSetWalkSpeed(Value);
+	}
+	else if (GetOwnerRole() == ROLE_Authority)
+	{
+		WalkSpeed += Value;
+	}
+}
+
+void UMainStats::SetSprintSpeed(float Value)
+{
+	if (GetOwnerRole() < ROLE_Authority)
+	{
+		ServerSetSprintSpeed(Value);
+	}
+	else if (GetOwnerRole() == ROLE_Authority)
+	{
+		SprintSpeed += Value;
+	}
+}
+
 void UMainStats::SetTimers()
 {
 	if (GetOwnerRole() == ROLE_Authority)
@@ -541,6 +582,32 @@ void UMainStats::ServerControlSprintingTimer_Implementation(bool IsSprinting)
 	if (GetOwnerRole() == ROLE_Authority)
 	{
 		ControlSprintingTimer(IsSprinting);
+	}
+}
+
+bool UMainStats::ServerSetWalkSpeed_Validate(float Value)
+{
+	return true;
+}
+
+void UMainStats::ServerSetWalkSpeed_Implementation(float Value)
+{
+	if (GetOwnerRole() == ROLE_Authority)
+	{
+		SetWalkSpeed(Value);
+	}
+}
+
+bool UMainStats::ServerSetSprintSpeed_Validate(float Value)
+{
+	return true;
+}
+
+void UMainStats::ServerSetSprintSpeed_Implementation(float Value)
+{
+	if (GetOwnerRole() == ROLE_Authority)
+	{
+		SetSprintSpeed(Value);
 	}
 }
 
